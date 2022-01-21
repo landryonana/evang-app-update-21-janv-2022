@@ -133,8 +133,6 @@ def user_register(request):
             #set password
             new_user.set_password(form.cleaned_data['password'])
             #save user or create new user
-
-            print('===========user_register****new_user', new_user.image.url)
             new_user.save()
             
             #create new History of new user
