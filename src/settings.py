@@ -1,5 +1,5 @@
 import os
-#import django_heroku
+import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -99,23 +99,23 @@ WSGI_APPLICATION = 'src.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 #DATABASES = {
 #    'default': {
-#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#        'NAME': 'ddm6vmju9o3f9k',
-#        'USER': 'yswizrnkuftzub',
-#        'PASSWORD': 'dd22abf3f9ac6d168cd86ef0dc0e30079acaae86a97cc344c1c3e60d077ad7e3',
-#        'HOST': 'ec2-107-22-18-26.compute-1.amazonaws.com',
-#        'POST': '5432',
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
 #}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ddm6vmju9o3f9k',
+        'USER': 'yswizrnkuftzub',
+        'PASSWORD': 'dd22abf3f9ac6d168cd86ef0dc0e30079acaae86a97cc344c1c3e60d077ad7e3',
+        'HOST': 'ec2-107-22-18-26.compute-1.amazonaws.com',
+        'POST': '5432',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -154,9 +154,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-#django_heroku.settings(locals())
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+django_heroku.settings(locals())
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -165,18 +165,18 @@ STATICFILES_DIRS = (
 #==============================================================
 #==============================================================
 #======FILE MANAGER FOR DEV=========
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 #==============================================================
 #==============================================================
 #======FILE MANAGER FOR PRODUCT=========
-#CLOUDINARY_STORAGE = {
-#    'CLOUD_NAME': 'vh-cam',
-#    'API_KEY': '259285251143441',
-#    'API_SECRET': 'aJvmF3SsffpBJFzVUcF8Bi6JPuM'
-#}
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'vh-cam',
+    'API_KEY': '259285251143441',
+    'API_SECRET': 'aJvmF3SsffpBJFzVUcF8Bi6JPuM'
+}
 
-#DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 
