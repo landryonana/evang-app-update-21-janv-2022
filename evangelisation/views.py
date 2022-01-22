@@ -268,7 +268,7 @@ def evangelisation_app_operations_modifier(request, type_opera, id):
                 form_model = ParticipantForm(instance=instance_model)
         elif type_opera=="personnes":
             if request.method=='POST':
-                form_model = PersonForm(data=request.POST, instance=instance_model)
+                form_model = PersonForm(instance=instance_model, data=request.POST)
                 if form_model.is_valid():
                     form_model.save()
                     messages.success(request, 'modification réussie')
