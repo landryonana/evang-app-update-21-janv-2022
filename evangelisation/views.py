@@ -10,7 +10,7 @@ from evangelisation.utils import (get_form_set, get_liste_models_and_template,
                                 redirect_by_form_set, get_liste_models, get_model,
                                 get_liste_models_operations, get_model, get_form_model
                                 )
-from evangelisation.forms import ParticipantForm, FormNbre, EvangForm
+from evangelisation.forms import ParticipantForm, FormNbre, EvangForm, PersonForm, SiteForm
 from evangelisation.models import Participant, Evangelisation, Site, Person, Suivi
 
 
@@ -255,24 +255,51 @@ def evangelisation_app_operations_modifier(request, type_opera, id):
     instance_model = None
     context = dict()
     form_model = None
-    form_model = get_form_model(type_opera)
-
     try:
         instance_model = model.objects.get(id=id)
-        if request.method=='POST':
-            form_model = form_model(data=request.POST, instance=instance_model)
-            if form_model.is_valid():
-                form_model.save()
-                messages.success(request, 'modification réussie')
-                return redirect('evangelisation:evangelisation_app_operations', type_opera)
-        else:
-            form_model = form_model(instance=instance_model)
+        if type_opera=="participants":
+            if request.method=='POST':
+                form_model = ParticipantForm(data=request.POST, instance=instance_model)
+                if form_model.is_valid():
+                    form_model.save()
+                    messages.success(request, 'modification réussie')
+                    return redirect('evangelisation:evangelisation_app_operations', type_opera)
+            else:
+                form_model = ParticipantForm(instance=instance_model)
+        elif type_opera=="personnes":
+            if request.method=='POST':
+                form_model = PersonForm(data=request.POST, instance=instance_model)
+                if form_model.is_valid():
+                    form_model.save()
+                    messages.success(request, 'modification réussie')
+                    return redirect('evangelisation:evangelisation_app_operations', type_opera)
+            else:
+                form_model = PersonForm(instance=instance_model)
+        elif type_opera=="sites":
+            if request.method=='POST':
+                form_model = SiteForm(data=request.POST, instance=instance_model)
+                if form_model.is_valid():
+                    form_model.save()
+                    messages.success(request, 'modification réussie')
+                    return redirect('evangelisation:evangelisation_app_operations', type_opera)
+            else:
+                form_model = SiteForm(instance=instance_model)
+        elif type_opera=="évangelisations":
+            if request.method=='POST':
+                form_model = EvangForm(data=request.POST, instance=instance_model)
+                if form_model.is_valid():
+                    form_model.save()
+                    messages.success(request, 'modification réussie')
+                    return redirect('evangelisation:evangelisation_app_operations', type_opera)
+            else:
+                form_model = EvangForm(instance=instance_model)
+        
         context['form'] = form_model
         context['instance_model'] = instance_model
         context['type_opera'] = type_opera
         return render(request, "pages/modifier.html", context)
     except model.DoesNotExist:
-        pass
+        return redirect('evangelisation:evangelisation_app_operations', type_opera)
     
 
 
