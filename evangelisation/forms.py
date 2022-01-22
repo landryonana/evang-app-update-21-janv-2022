@@ -85,27 +85,20 @@ class PersonForm(forms.ModelForm):
     
     def clean_contacts(self):
         contact = self.cleaned_data['contacts']
-        
-        if contact != None and int(contact) != 0:
-            nbre_personnes_with_this_phone = len(Person.objects.filter(contacts=contact))
-            print('==============nbre_personnes_with_this_phone', nbre_personnes_with_this_phone)
-            if nbre_personnes_with_this_phone !=0:
-                raise forms.ValidationError("Le numéro de télephone existe déjà")
-                if len(str(contact))!=9:
-                    raise forms.ValidationError("Le numéro de télephone est invalide")
-                else:
-                    if len(str(contact))==9:
-                        contact_6 = str(contact)[0]
-                        print(contact_6)
-                        if int(contact_6)!=6:
-                            raise forms.ValidationError("Le numéro de télephone doit commencer par 6")
+        if len(str(contact))!=9 and contact!=None:
+            raise forms.ValidationError("Le numéro de télephone est invalide")
+        else:
+            if len(str(contact))==9:
+                contact_6 = str(contact)[0]
+                print(contact_6)
+                if int(contact_6)!=6:
+                    raise forms.ValidationError("Le numéro de télephone doit commencer par 6")
 
         return contact
     
-
     def clean_date(self):
-        evangelisation = cleaned_data.get("evangelisation")
-        date = cleaned_data.get("date")
+        evangelisation = self.cleaned_data.get("evangelisation")
+        date = self.cleaned_data.get("date")
         date = evangelisation.day
         return date
 
@@ -129,33 +122,39 @@ class PersonFormUpdate(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         nom_prenom = cleaned_data.get("nom_et_prenom")
-        quartier = cleaned_data.get("quartier_d_habitation")
-        evangelisation = cleaned_data.get("evangelisation")
+        accepte_jesus = cleaned_data.get("accepte_jesus")
+        sexe = cleaned_data.get("sexe")
 
-        msg1 = f"Le nom du site et le lieu de {evangelisation} ne sont pas identiques"
+        msg1 = "Merci de renseigner ce champ"
+        if accepte_jesus=="---------":
+            self.add_error('accepte_jesus', msg1)
+        if nom_prenom==None:
+            self.add_error('nom_et_prenom', msg1)
+        if sexe=="---------":
+            self.add_error('accepte_jesus', msg1)
 
         msg = "Ce champ doit avoir au moins 03 caractères"
-        if len(nom_prenom)<=2:
+        if nom_prenom!=None and len(nom_prenom)<=2:
             self.add_error('nom_et_prenom', msg)
     
     def clean_contacts(self):
         contact = self.cleaned_data['contacts']
-        nbre_personnes_with_this_phone = len(Person.objects.filter(contacts=contact))
-        print('==============nbre_personnes_with_this_phone', nbre_personnes_with_this_phone)
-        if nbre_personnes_with_this_phone !=0:
-            raise forms.ValidationError("Le numéro de téléphone existe déjà")
+        if len(str(contact))!=9 and contact!=None:
+            raise forms.ValidationError("Le numéro de télephone est invalide")
         else:
-            if contact != None:
-                if len(str(contact))!=9:
-                    raise forms.ValidationError("Le numéro de télephone est invalide")
-                else:
-                    if len(str(contact))==9:
-                        contact_6 = str(contact)[0]
-                        print(contact_6)
-                        if int(contact_6)!=6:
-                            raise forms.ValidationError("Le numéro de télephone doit commencer par 6")
-        return contact
+            if len(str(contact))==9:
+                contact_6 = str(contact)[0]
+                print(contact_6)
+                if int(contact_6)!=6:
+                    raise forms.ValidationError("Le numéro de télephone doit commencer par 6")
 
+        return contact
+    
+    def clean_date(self):
+        evangelisation = self.cleaned_data.get("evangelisation")
+        date = self.cleaned_data.get("date")
+        date = evangelisation.day
+        return date
 
 
 #====================================================================================
