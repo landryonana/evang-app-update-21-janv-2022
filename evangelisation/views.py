@@ -260,7 +260,7 @@ def evangelisation_app_operations_modifier(request, type_opera, id):
     try:
         instance_model = model.objects.get(id=id)
         
-        if request.method=='PUT':
+        if request.method=='POST':
             form_model = form_model(instance=instance_model, data=request.POST)
             if form_model.is_valid():
                 form_model.save()
