@@ -259,11 +259,16 @@ def evangelisation_app_operations_modifier(request, type_opera, id):
 
     try:
         instance_model = model.objects.get(id=id)
-        
         if request.method=='POST':
             form_model = form_model(instance=instance_model, data=request.POST)
             if form_model.is_valid():
-                form_model.save()
+                if type_opera=='personnes':
+                    form_personne = form_model.save(commit=False)
+                    form_personne.evangelisation = Evangelisation.objects.get(id=int(request.POST['evangelisation']))
+                    form_personne.save()
+                    form_model.save_m2m()
+                else:
+                    form_model.save()
                 messages.success(request, 'modification réussie')
                 return redirect('evangelisation:evangelisation_app_operations', type_opera)
         else:
