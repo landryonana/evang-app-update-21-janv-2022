@@ -259,21 +259,21 @@ def evangelisation_app_operations_modifier(request, type_opera, id):
 
     try:
         instance_model = model.objects.get(id=id)
-        
-    except model.DoesNotExist:
-        pass
-    if request.method=='POST':
+        if request.method=='POST':
             form_model = form_model(data=request.POST, instance=instance_model)
             if form_model.is_valid():
                 form_model.save()
                 messages.success(request, 'modification réussie')
                 return redirect('evangelisation:evangelisation_app_operations', type_opera)
-    else:
-        form_model = form_model(instance=instance_model)
-    context['form'] = form_model
-    context['instance_model'] = instance_model
-    context['type_opera'] = type_opera
-    return render(request, "pages/modifier.html", context)
+        else:
+            form_model = form_model(instance=instance_model)
+        context['form'] = form_model
+        context['instance_model'] = instance_model
+        context['type_opera'] = type_opera
+        return render(request, "pages/modifier.html", context)
+    except model.DoesNotExist:
+        pass
+    
 
 
 
